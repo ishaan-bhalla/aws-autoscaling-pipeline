@@ -1,0 +1,24 @@
+[Unit]
+Description=WordFreq Worker Service
+ConditionPathExists=/home/ubuntu/lsde-wordfreq-app/run_worker.sh
+After=network.target
+
+[Service]
+User=ubuntu
+Group=ubuntu
+Environment=GOPATH=/home/ubuntu/go
+Environment=GOROOT=/usr/local/go
+WorkingDirectory=/home/ubuntu/lsde-wordfreq-app
+ExecStart=/home/ubuntu/lsde-wordfreq-app/run_worker.sh
+
+# Make sure log directory exists and owned by syslog
+PermissionsStartOnly=true
+ExecStartPre=/bin/mkdir -p /var/log/wordfreqservice
+ExecStartPre=/bin/chown syslog:adm /var/log/wordfreqservice
+ExecStartPre=/bin/chmod 755 /var/log/wordfreqservice
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=wordfreqservice
+
+[Install]
+WantedBy=multi-user.target

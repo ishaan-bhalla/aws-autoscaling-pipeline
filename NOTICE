@@ -1,0 +1,12 @@
+aws-autoscaling-pipeline
+
+The word-frequency worker in app/ is based on the AWS sample
+"aws-go-wordfreq-sample" (https://github.com/aws-samples/aws-go-wordfreq-sample),
+Copyright Amazon.com, Inc. or its affiliates, licensed under the Apache
+License 2.0 (see LICENSE). The starter version used here adds 10-20 s of
+simulated processing per file.
+
+Changes in this repository: Go modules and a Docker build; app/session.go so
+the same binary can target a local AWS emulator via AWS_ENDPOINT_URL; the
+local/ stack (Moto, scaling policy re-creation, load test, plotting); the
+documentation and redacted screenshots of the AWS deployment.

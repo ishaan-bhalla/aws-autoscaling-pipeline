@@ -1,0 +1,25 @@
+# Local stand-in for the AWS deployment: Moto emulates S3, SQS and DynamoDB,
+# and each "worker" container plays the part of one EC2 instance in the
+# Auto Scaling group. local/scripts/autoscale.py adds and removes workers.
+name: wordfreq
+
+services:
+  moto:
+    image: motoserver/moto:5.1.4
+    ports:
+      - "4566:5000"
+
+  worker:
+    build: ../app
+    depends_on: [moto]
+    restart: unless-stopped
+    environment:
+      AWS_ENDPOINT_URL: http://moto:5000
+      AWS_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: local
+      AWS_SECRET_ACCESS_KEY: local
+      WORKER_QUEUE_URL: http://moto:5000/123456789012/wordfreq-jobs
+      WORKER_RESULT_QUEUE_URL: http://moto:5000/123456789012/wordfreq-results
+      WORKER_RESULT_TABLENAME: wordfreq
+      WORKER_MESSAGE_VISIBILITY: "200"   # same as the AWS run
+      WORKER_COUNT: "1"                   # one job at a time, like a 1-vCPU t2.micro
