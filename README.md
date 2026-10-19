@@ -46,6 +46,10 @@ flowchart LR
 
 A file landing in the processing bucket fires an S3 event, which puts one job message on SQS. Each worker, a Go service running under systemd on EC2, pulls a message, downloads the file, counts its ten most frequent words, writes them to DynamoDB, and reports to a result queue. Nothing calls the workers directly, so the number of workers can change at any time without losing jobs.
 
+[![Architecture diagram of ishaan-bhalla/aws-autoscaling-pipeline](https://gitdiagram.com/ishaan-bhalla/aws-autoscaling-pipeline/diagram.png)](https://gitdiagram.com/ishaan-bhalla/aws-autoscaling-pipeline?utm_source=readme&utm_medium=picture)
+
+*How the code is organised (GitDiagram; click to explore it interactively). The flowchart above shows the AWS deployment; this shows the repository.*
+
 | Decision | Choice | Why |
 |---|---|---|
 | Scaling metric | Queue backlog (`ApproximateNumberOfMessagesVisible`), not CPU | The work is mostly waiting on S3 and DynamoDB, so CPU stays low even when the queue is full. Backlog measures the work that is actually waiting. |
