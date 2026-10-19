@@ -30,25 +30,11 @@
 
 ## 1. Architecture and design decisions
 
-```mermaid
-flowchart LR
-    U[Upload bucket<br/>S3] -->|copy 120 files| P[Processing bucket<br/>S3]
-    P -->|S3 event notification<br/>one message per file| Q[Job queue<br/>SQS]
-    Q --> W1[EC2 worker 1]
-    Q --> W2[EC2 worker ...]
-    Q --> W5[EC2 worker 5]
-    W1 & W2 & W5 -->|top 10 words| D[(DynamoDB<br/>results table)]
-    W1 & W2 & W5 -->|done message| R[Result queue<br/>SQS]
-    Q -.->|ApproximateNumberOfMessagesVisible| C[CloudWatch alarms]
-    C -.->|add or remove 1 instance| G[EC2 Auto Scaling group<br/>min 1 · max 5]
-    G -.-> W1 & W2 & W5
-```
-
 A file landing in the processing bucket fires an S3 event, which puts one job message on SQS. Each worker, a Go service running under systemd on EC2, pulls a message, downloads the file, counts its ten most frequent words, writes them to DynamoDB, and reports to a result queue. Nothing calls the workers directly, so the number of workers can change at any time without losing jobs.
 
 [![Architecture diagram of ishaan-bhalla/aws-autoscaling-pipeline](https://gitdiagram.com/ishaan-bhalla/aws-autoscaling-pipeline/diagram.png)](https://gitdiagram.com/ishaan-bhalla/aws-autoscaling-pipeline?utm_source=readme&utm_medium=picture)
 
-*How the code is organised (GitDiagram; click to explore it interactively). The flowchart above shows the AWS deployment; this shows the repository.*
+*Architecture diagram (GitDiagram; click to explore it interactively).*
 
 | Decision | Choice | Why |
 |---|---|---|
