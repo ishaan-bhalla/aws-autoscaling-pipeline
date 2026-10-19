@@ -17,7 +17,7 @@
 - **On AWS:** 120 text files dropped into S3 at once. CloudWatch alarms on the queue backlog scaled the EC2 Auto Scaling group **from 1 to 5 instances and back to 1**, one instance at a time, with every result written to DynamoDB.
 - **Instance type:** the run took about **10 minutes on t2.micro** and about **9 on t3.micro**. The job is I/O-bound, so a faster CPU barely helps; more workers do.
 - **Self-healing:** during testing, AWS replaced an instance that failed its health check without any action from me ([screenshot](#2-what-happened-on-aws)).
-- **Local re-run:** the same policy, re-created with Docker, processed 120 files in **12 min 16 s**, scaling **1 → 4 → 1**. It also exposed a flaw in the scale-in rule: workers were removed while 48 jobs were still in progress ([section 4](#4-what-id-change)).
+- **Local re-run:** the same policy, re-created with Docker, processed 120 files in **12 min 16 s**, scaling **1 → 4 → 1**. It also exposed a flaw in the scale-in rule: workers were removed while 45 jobs were still in progress ([section 4](#4-what-id-change)).
 
 ## Contents
 
@@ -84,7 +84,7 @@ The sandbox account is gone, so `local/` re-creates the system on a laptop to ma
 
 ## 4. What I'd change
 
-- **Scale in on total work, not waiting work.** The scale-in rule fires when no messages are *waiting*, even if many are still *in progress*. Locally, workers started being removed at minute 6 with 48 jobs in flight, and the last stretch took another 6 minutes on fewer workers. A better signal is visible + in-flight messages per instance, using a target-tracking policy (for example, aim for 10 messages per worker). Workers should also finish their current job before they're terminated (a lifecycle hook or a SIGTERM handler).
+- **Scale in on total work, not waiting work.** The scale-in rule fires when no messages are *waiting*, even if many are still *in progress*. Locally, workers started being removed at minute 6 with 45 jobs in flight, and the last stretch took another 6 minutes on fewer workers. A better signal is visible + in-flight messages per instance, using a target-tracking policy (for example, aim for 10 messages per worker). Workers should also finish their current job before they're terminated (a lifecycle hook or a SIGTERM handler).
 - **Spread across Availability Zones and use a private subnet,** so one zone failing doesn't stop processing and the workers aren't exposed to the internet.
 - **Protect the data:** S3 versioning and lifecycle rules for the files, and point-in-time recovery on the DynamoDB table.
 - **Consider Lambda instead of EC2 for bursty loads like this.** Short, independent jobs fit Lambda's per-invocation scaling, with no instances to boot or leave idle. EC2 still makes sense for long-running or heavy jobs.
