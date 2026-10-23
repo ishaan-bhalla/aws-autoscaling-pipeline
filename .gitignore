@@ -3,3 +3,4 @@ __pycache__/
 local/data/
 .DS_Store
 *.pem
+local/poison/

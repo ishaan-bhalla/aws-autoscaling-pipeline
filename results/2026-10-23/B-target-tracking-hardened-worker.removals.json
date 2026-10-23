@@ -1,0 +1,50 @@
+{
+  "policy": "target",
+  "target": 10,
+  "out_evals": 3,
+  "in_evals": 15,
+  "start_epoch_ms": 1792760914918,
+  "end_epoch_ms": 1792762119358,
+  "removals": [
+    {
+      "seconds": 1201,
+      "container": "wordfreq-worker-5",
+      "queue_in_flight_at_decision": 0,
+      "held_when_stopped": 0,
+      "abandoned": 0,
+      "abandoned_ids": [],
+      "stop_took_s": 1.2,
+      "exited_cleanly": true
+    },
+    {
+      "seconds": 1201,
+      "container": "wordfreq-worker-2",
+      "queue_in_flight_at_decision": 0,
+      "held_when_stopped": 0,
+      "abandoned": 0,
+      "abandoned_ids": [],
+      "stop_took_s": 1.5,
+      "exited_cleanly": true
+    },
+    {
+      "seconds": 1201,
+      "container": "wordfreq-worker-4",
+      "queue_in_flight_at_decision": 0,
+      "held_when_stopped": 0,
+      "abandoned": 0,
+      "abandoned_ids": [],
+      "stop_took_s": 2.3,
+      "exited_cleanly": true
+    },
+    {
+      "seconds": 1201,
+      "container": "wordfreq-worker-3",
+      "queue_in_flight_at_decision": 0,
+      "held_when_stopped": 0,
+      "abandoned": 0,
+      "abandoned_ids": [],
+      "stop_took_s": 2.4,
+      "exited_cleanly": true
+    }
+  ]
+}

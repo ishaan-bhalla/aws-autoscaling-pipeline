@@ -15,6 +15,8 @@ type ResultCollector struct {
 	notify   *ResultNotifier
 	queue    *JobMessageQueue
 
+	crashEvery uint32
+
 	wg sync.WaitGroup
 }
 
@@ -52,7 +54,14 @@ func (r *ResultCollector) ProcessJobResult(resultCh <-chan *wordfreq.JobResult) 
 			// Record result to dynamoDB, and delete message if successful
 			// if the writing to dynamoDB fails, don't delete the message
 			// so the job can be retried by another worker later.
-			if err := r.recorder.Record(result); err != nil {
+			err := r.recorder.Record(result)
+			if err == ErrAlreadyRecorded {
+				fmt.Println("Duplicate delivery, already recorded,", message.ID, result.Job.Key)
+				err = nil
+			} else if err == nil && injectedCrash(result.Job, r.crashEvery, crashAfterWrite) {
+				crash(result.Job, "after-write")
+			}
+			if err != nil {
 				result.Status = wordfreq.JobCompleteFailure
 				result.StatusMessage = fmt.Sprintf("record results failed, %v", err)
 				log.Println("failed to recored result", message.ID, err)
@@ -71,6 +80,7 @@ func (r *ResultCollector) ProcessJobResult(resultCh <-chan *wordfreq.JobResult) 
 		if err := r.notify.Send(result); err != nil {
 			log.Println("Failed to send result to SQS queue", err)
 		}
+		r.queue.Release()
 	}
 }
 

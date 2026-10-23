@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"strconv"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -22,6 +23,14 @@ type JobMessageQueue struct {
 
 	jobCh  chan *wordfreq.Job
 	msgSvc sqsiface.SQSAPI
+
+	// slots bounds how many messages this process holds at once (hardened
+	// mode only; nil means the original behaviour, where the listener keeps
+	// receiving until the 10-job channel buffer is full).
+	slots chan struct{}
+	// keepUnparseable leaves messages that cannot be parsed on the queue,
+	// so the redrive policy moves them to the dead-letter queue.
+	keepUnparseable bool
 }
 
 // NewJobMessageQueue creates a new instance of the JobMessageQueue configuring it
@@ -37,6 +46,21 @@ func NewJobMessageQueue(url string, visibilityTime, waitTime int64, svc sqsiface
 	}
 }
 
+// Bound limits the queue to holding at most n received messages at a time.
+// A slot is taken before each receive and given back by Release once the
+// job's message has been deleted or the job has failed.
+func (m *JobMessageQueue) Bound(n int) {
+	m.slots = make(chan struct{}, n)
+	m.keepUnparseable = true
+}
+
+// Release gives back a slot taken in Listen. No-op in the original mode.
+func (m *JobMessageQueue) Release() {
+	if m.slots != nil {
+		<-m.slots
+	}
+}
+
 // Listen waits for messages to arrive from the SQS queue, parses the JSON
 // message and sends the jobs to the job channel to be processed by the worker pool.
 func (m *JobMessageQueue) Listen(doneCh <-chan struct{}) {
@@ -49,11 +73,22 @@ func (m *JobMessageQueue) Listen(doneCh <-chan struct{}) {
 		case <-doneCh:
 			return
 		default:
+			if m.slots != nil {
+				select {
+				case m.slots <- struct{}{}:
+				case <-doneCh:
+					return
+				}
+			}
 			msgs, err := m.receiveMsg()
 			if err != nil {
 				log.Println("Failed to read from message queue", err)
+				m.Release()
 				time.Sleep(5 * time.Second)
 				continue
+			}
+			if len(msgs) == 0 {
+				m.Release()
 			}
 
 			// Since SQS ReceiveMessage could return multiple messages at once
@@ -62,17 +97,28 @@ func (m *JobMessageQueue) Listen(doneCh <-chan struct{}) {
 			// to bump up the number of messages that will be read from SQS at once
 			// by default only one message is read.
 			for _, msg := range msgs {
-				parseErr := parseJobMessage(m.jobCh,
-					wordfreq.JobMessage{
-						ID:            *msg.MessageId,
-						ReceiptHandle: *msg.ReceiptHandle,
-						Body:          *msg.Body,
-					},
-					m.queueVisibility,
-				)
+				jm := wordfreq.JobMessage{
+					ID:            *msg.MessageId,
+					ReceiptHandle: *msg.ReceiptHandle,
+					Body:          *msg.Body,
+				}
+				if v, ok := msg.Attributes[sqs.MessageSystemAttributeNameSentTimestamp]; ok {
+					jm.SentTimestampMs, _ = strconv.ParseInt(*v, 10, 64)
+				}
+				if v, ok := msg.Attributes[sqs.MessageSystemAttributeNameApproximateReceiveCount]; ok {
+					jm.ReceiveCount, _ = strconv.Atoi(*v)
+				}
+				parseErr := parseJobMessage(m.jobCh, jm, m.queueVisibility)
 				if parseErr != nil {
 					fmt.Println("Failed to parse", *msg.MessageId, "job message,", parseErr)
-					m.DeleteMessage(*msg.ReceiptHandle)
+					if m.keepUnparseable {
+						// Leave it for the redrive policy: after
+						// maxReceiveCount receives it moves to the DLQ.
+						fmt.Println("Left unparseable message for the dead-letter queue,", *msg.MessageId)
+					} else {
+						m.DeleteMessage(*msg.ReceiptHandle)
+					}
+					m.Release()
 				}
 			}
 		}
@@ -88,6 +134,10 @@ func (m *JobMessageQueue) receiveMsg() ([]*sqs.Message, error) {
 		QueueUrl:          aws.String(m.queueURL),
 		WaitTimeSeconds:   aws.Int64(m.queueWait),
 		VisibilityTimeout: aws.Int64(m.queueVisibility),
+		AttributeNames: aws.StringSlice([]string{
+			sqs.MessageSystemAttributeNameSentTimestamp,
+			sqs.MessageSystemAttributeNameApproximateReceiveCount,
+		}),
 	})
 	if err != nil {
 		return nil, err

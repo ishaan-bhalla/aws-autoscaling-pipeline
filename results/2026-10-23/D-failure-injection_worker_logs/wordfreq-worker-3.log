@@ -1,0 +1,124 @@
+Job Result Collector starting.
+Job Message queue starting
+Worker 0 starting; CTRL+C to quit
+Processing message d638efbd-324b-444b-9936-ab8db7d5dcc1
+Worker 0 received job d638efbd-324b-444b-9936-ab8db7d5dcc1
+Received job result d638efbd-324b-444b-9936-ab8db7d5dcc1
+Successfully processed job d638efbd-324b-444b-9936-ab8db7d5dcc1
+Deleted message, d638efbd-324b-444b-9936-ab8db7d5dcc1
+Processing message 63bcc6ba-d940-4a65-b265-f987d8a1a9b8
+Worker 0 received job 63bcc6ba-d940-4a65-b265-f987d8a1a9b8
+Received job result 63bcc6ba-d940-4a65-b265-f987d8a1a9b8
+Successfully processed job 63bcc6ba-d940-4a65-b265-f987d8a1a9b8
+Deleted message, 63bcc6ba-d940-4a65-b265-f987d8a1a9b8
+Processing message ce9911f9-df66-4eb1-bfc0-396d330a1377
+Worker 0 received job ce9911f9-df66-4eb1-bfc0-396d330a1377
+Received job result ce9911f9-df66-4eb1-bfc0-396d330a1377
+Successfully processed job ce9911f9-df66-4eb1-bfc0-396d330a1377
+Deleted message, ce9911f9-df66-4eb1-bfc0-396d330a1377
+Processing message 60ce1665-fe84-43fc-a09e-0056f59c369a
+Worker 0 received job 60ce1665-fe84-43fc-a09e-0056f59c369a
+Received job result 60ce1665-fe84-43fc-a09e-0056f59c369a
+Successfully processed job 60ce1665-fe84-43fc-a09e-0056f59c369a
+Deleted message, 60ce1665-fe84-43fc-a09e-0056f59c369a
+Processing message af8507c9-2159-4097-acb8-f3e7b90cab53
+Worker 0 received job af8507c9-2159-4097-acb8-f3e7b90cab53
+Received job result af8507c9-2159-4097-acb8-f3e7b90cab53
+Successfully processed job af8507c9-2159-4097-acb8-f3e7b90cab53
+Deleted message, af8507c9-2159-4097-acb8-f3e7b90cab53
+Processing message 0d441569-8d8a-419a-978d-9b271210975d
+Worker 0 received job 0d441569-8d8a-419a-978d-9b271210975d
+Received job result 0d441569-8d8a-419a-978d-9b271210975d
+Successfully processed job 0d441569-8d8a-419a-978d-9b271210975d
+Duplicate delivery, already recorded, 0d441569-8d8a-419a-978d-9b271210975d dorian-gray-06.txt
+Deleted message, 0d441569-8d8a-419a-978d-9b271210975d
+Processing message 310a3144-58e8-4a0e-b1f4-67e04c43ead4
+Worker 0 received job 310a3144-58e8-4a0e-b1f4-67e04c43ead4
+Received job result 310a3144-58e8-4a0e-b1f4-67e04c43ead4
+Successfully processed job 310a3144-58e8-4a0e-b1f4-67e04c43ead4
+Deleted message, 310a3144-58e8-4a0e-b1f4-67e04c43ead4
+Processing message 533890b2-6e7e-4274-8549-f1c40c3df76f
+Worker 0 received job 533890b2-6e7e-4274-8549-f1c40c3df76f
+Received job result 533890b2-6e7e-4274-8549-f1c40c3df76f
+Successfully processed job 533890b2-6e7e-4274-8549-f1c40c3df76f
+Deleted message, 533890b2-6e7e-4274-8549-f1c40c3df76f
+Processing message 537f0c85-28c0-415e-ae48-c69125c575d1
+Worker 0 received job 537f0c85-28c0-415e-ae48-c69125c575d1
+Received job result 537f0c85-28c0-415e-ae48-c69125c575d1
+Successfully processed job 537f0c85-28c0-415e-ae48-c69125c575d1
+Deleted message, 537f0c85-28c0-415e-ae48-c69125c575d1
+Processing message 97b9a701-e6ba-4c0c-987e-8997b1b1d027
+Worker 0 received job 97b9a701-e6ba-4c0c-987e-8997b1b1d027
+Received job result 97b9a701-e6ba-4c0c-987e-8997b1b1d027
+Successfully processed job 97b9a701-e6ba-4c0c-987e-8997b1b1d027
+Deleted message, 97b9a701-e6ba-4c0c-987e-8997b1b1d027
+Processing message e19989fd-6fd3-4eed-b008-0cc5eb54d52e
+Worker 0 received job e19989fd-6fd3-4eed-b008-0cc5eb54d52e
+Received job result e19989fd-6fd3-4eed-b008-0cc5eb54d52e
+Successfully processed job e19989fd-6fd3-4eed-b008-0cc5eb54d52e
+Deleted message, e19989fd-6fd3-4eed-b008-0cc5eb54d52e
+Processing message adbf98e5-e130-4f70-aa06-20ef090c6fdf
+Worker 0 received job adbf98e5-e130-4f70-aa06-20ef090c6fdf
+Received job result adbf98e5-e130-4f70-aa06-20ef090c6fdf
+Successfully processed job adbf98e5-e130-4f70-aa06-20ef090c6fdf
+Deleted message, adbf98e5-e130-4f70-aa06-20ef090c6fdf
+Processing message 74b7bffb-239a-4400-8a05-7bf1bbfa8ee4
+Worker 0 received job 74b7bffb-239a-4400-8a05-7bf1bbfa8ee4
+Received job result 74b7bffb-239a-4400-8a05-7bf1bbfa8ee4
+Successfully processed job 74b7bffb-239a-4400-8a05-7bf1bbfa8ee4
+Deleted message, 74b7bffb-239a-4400-8a05-7bf1bbfa8ee4
+Processing message 3b55a43d-bed9-4fbd-b97f-46868d464a08
+Worker 0 received job 3b55a43d-bed9-4fbd-b97f-46868d464a08
+Received job result 3b55a43d-bed9-4fbd-b97f-46868d464a08
+Successfully processed job 3b55a43d-bed9-4fbd-b97f-46868d464a08
+Deleted message, 3b55a43d-bed9-4fbd-b97f-46868d464a08
+Processing message b6654710-a5f4-479a-9d14-0a9646c2a939
+Worker 0 received job b6654710-a5f4-479a-9d14-0a9646c2a939
+Received job result b6654710-a5f4-479a-9d14-0a9646c2a939
+Successfully processed job b6654710-a5f4-479a-9d14-0a9646c2a939
+Deleted message, b6654710-a5f4-479a-9d14-0a9646c2a939
+Processing message 77e0103a-118a-45d2-a4a9-2100c10cf691
+Worker 0 received job 77e0103a-118a-45d2-a4a9-2100c10cf691
+Received job result 77e0103a-118a-45d2-a4a9-2100c10cf691
+Successfully processed job 77e0103a-118a-45d2-a4a9-2100c10cf691
+Deleted message, 77e0103a-118a-45d2-a4a9-2100c10cf691
+Processing message 3ed6863d-42f5-4e18-b433-07272ac9ec00
+Worker 0 received job 3ed6863d-42f5-4e18-b433-07272ac9ec00
+Received job result 3ed6863d-42f5-4e18-b433-07272ac9ec00
+Successfully processed job 3ed6863d-42f5-4e18-b433-07272ac9ec00
+Deleted message, 3ed6863d-42f5-4e18-b433-07272ac9ec00
+Processing message 872189ee-1def-4074-93b0-98c84967ba20
+Worker 0 received job 872189ee-1def-4074-93b0-98c84967ba20
+Received job result 872189ee-1def-4074-93b0-98c84967ba20
+Successfully processed job 872189ee-1def-4074-93b0-98c84967ba20
+Deleted message, 872189ee-1def-4074-93b0-98c84967ba20
+Processing message e5575a7d-16ed-46a8-96ca-edf820f44b37
+Worker 0 received job e5575a7d-16ed-46a8-96ca-edf820f44b37
+Received job result e5575a7d-16ed-46a8-96ca-edf820f44b37
+Successfully processed job e5575a7d-16ed-46a8-96ca-edf820f44b37
+Deleted message, e5575a7d-16ed-46a8-96ca-edf820f44b37
+Processing message 38354c35-537e-4574-bcf6-a34153d3e13a
+Worker 0 received job 38354c35-537e-4574-bcf6-a34153d3e13a
+Received job result 38354c35-537e-4574-bcf6-a34153d3e13a
+Successfully processed job 38354c35-537e-4574-bcf6-a34153d3e13a
+Deleted message, 38354c35-537e-4574-bcf6-a34153d3e13a
+Processing message ef6509ca-4da9-4fcc-b8ec-86348f1bf12c
+Worker 0 received job ef6509ca-4da9-4fcc-b8ec-86348f1bf12c
+Received job result ef6509ca-4da9-4fcc-b8ec-86348f1bf12c
+Successfully processed job ef6509ca-4da9-4fcc-b8ec-86348f1bf12c
+Deleted message, ef6509ca-4da9-4fcc-b8ec-86348f1bf12c
+Processing message 65abb8de-2f37-4e0c-8328-373a5026777f
+Worker 0 received job 65abb8de-2f37-4e0c-8328-373a5026777f
+Received job result 65abb8de-2f37-4e0c-8328-373a5026777f
+Successfully processed job 65abb8de-2f37-4e0c-8328-373a5026777f
+Deleted message, 65abb8de-2f37-4e0c-8328-373a5026777f
+Processing message a6392635-750b-4830-a874-3ff055c2114b
+Worker 0 received job a6392635-750b-4830-a874-3ff055c2114b
+Received job result a6392635-750b-4830-a874-3ff055c2114b
+Successfully processed job a6392635-750b-4830-a874-3ff055c2114b
+Deleted message, a6392635-750b-4830-a874-3ff055c2114b
+Received terminated, existing...
+Job Message queue quitting.
+Worker 0 quitting.
+Job Result Collector quiting.
+Worker service exited cleanly

@@ -1,11 +1,18 @@
-"""Plot results/local_run.csv: queue backlog against the number of workers."""
+"""Plot a run's samples: queue backlog against the number of workers.
+
+    python plot_run.py                      # results/local_run.csv -> docs/local_scaling_run.png
+    python plot_run.py RUN.csv OUT.png
+"""
+import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[2]
-df = pd.read_csv(ROOT / "results" / "local_run.csv")
+CSV = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "results" / "local_run.csv"
+PNG = Path(sys.argv[2]) if len(sys.argv) > 2 else ROOT / "docs" / "local_scaling_run.png"
+df = pd.read_csv(CSV)
 df["minutes"] = df.seconds / 60
 
 fig, ax = plt.subplots(figsize=(10, 4.8), dpi=150)
@@ -29,5 +36,5 @@ ax.set_title(f"Local re-run of the scaling policy: {int(df.done.max())} files, 1
 for a in (ax, ax2):
     a.spines["top"].set_visible(False)
 fig.tight_layout()
-fig.savefig(ROOT / "docs" / "local_scaling_run.png")
-print("docs/local_scaling_run.png")
+fig.savefig(PNG)
+print(PNG)

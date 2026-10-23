@@ -1,0 +1,6 @@
+# ./local/drain_test.sh, run 2026-10-23
+original  worker stopped mid-job: stop took 0 s; result in DynamoDB: 0; message still on queue (hidden until visibility timeout): 1
+hardened  worker stopped mid-job: stop took 11 s; result in DynamoDB: 1; message still on queue (hidden until visibility timeout): 0
+    log: Received terminated, existing...
+    log: Deleted message, 9504034e-53f4-492f-b49e-a5c3d7b05783
+    log: Worker service exited cleanly

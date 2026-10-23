@@ -8,11 +8,14 @@ services:
     image: motoserver/moto:5.1.4
     ports:
       - "4566:5000"
+    cpus: 2            # keep the emulator from taking over the machine
 
   worker:
     build: ../app
     depends_on: [moto]
-    restart: unless-stopped
+    restart: unless-stopped   # a crashed worker is restarted, like an ASG replacing an unhealthy instance
+    cpus: 1
+    stop_grace_period: 90s   # systemd's default stop timeout on the EC2 instances
     environment:
       AWS_ENDPOINT_URL: http://moto:5000
       AWS_REGION: us-east-1
@@ -21,5 +24,7 @@ services:
       WORKER_QUEUE_URL: http://moto:5000/123456789012/wordfreq-jobs
       WORKER_RESULT_QUEUE_URL: http://moto:5000/123456789012/wordfreq-results
       WORKER_RESULT_TABLENAME: wordfreq
-      WORKER_MESSAGE_VISIBILITY: "200"   # same as the AWS run
+      WORKER_MESSAGE_VISIBILITY: "${WORKER_MESSAGE_VISIBILITY:-200}"   # 200 = the AWS run
       WORKER_COUNT: "1"                   # one job at a time, like a 1-vCPU t2.micro
+      WORKER_HARDENED: "${WORKER_HARDENED:-0}"        # 1 = failure-handling changes (see app/cmd/worker/config.go)
+      WORKER_CRASH_EVERY: "${WORKER_CRASH_EVERY:-0}"  # >0 = inject crashes (failure test only)

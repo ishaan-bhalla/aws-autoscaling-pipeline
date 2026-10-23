@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"strconv"
-	"runtime"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/ec2metadata"
 	"github.com/aws/aws-sdk-go/aws/session"
+	"os"
+	"runtime"
+	"strconv"
 
 	wordfreq "github.com/ishaan-bhalla/aws-autoscaling-pipeline/app"
 )
@@ -32,6 +32,25 @@ type Config struct {
 	// The amount of time in seconds a read job message from the SQS will be
 	// hidden from other readers of the queue.
 	MessageVisibilityTimeout int64
+
+	// Hardened turns on the failure-handling changes made after the course
+	// (WORKER_HARDENED=1). Off by default, so the binary behaves exactly as
+	// it did on AWS unless asked otherwise:
+	//   - receive a message only when a worker is free (no prefetching), so
+	//     each container holds at most NumWorkers messages;
+	//   - on SIGTERM, stop receiving, finish the job in hand, then exit;
+	//   - write results with a conditional put keyed on the file and its
+	//     ETag, so a redelivered message is recorded once;
+	//   - leave unparseable messages on the queue for the dead-letter queue
+	//     instead of deleting them.
+	Hardened bool
+
+	// CrashEvery injects worker crashes for failure testing
+	// (WORKER_CRASH_EVERY=N, 0 = off). On a message's first delivery, a file
+	// whose name hashes to 0 mod N crashes the worker after counting but
+	// before the DynamoDB write; one that hashes to 1 mod N crashes it after
+	// the write but before the message is deleted.
+	CrashEvery uint32
 }
 
 // getConfig collects the configuration from the environment variables, and
@@ -87,6 +106,16 @@ func getConfig() (Config, error) {
 			return c, fmt.Errorf("invalid worker number")
 		}
 		c.NumWorkers = int(atOnce)
+	}
+
+	c.Hardened = os.Getenv("WORKER_HARDENED") == "1"
+
+	if s := os.Getenv("WORKER_CRASH_EVERY"); s != "" {
+		n, err := strconv.ParseUint(s, 10, 32)
+		if err != nil {
+			return c, fmt.Errorf("invalid WORKER_CRASH_EVERY %v", err)
+		}
+		c.CrashEvery = uint32(n)
 	}
 
 	return c, nil

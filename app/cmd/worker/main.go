@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"syscall"
 
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/s3"
@@ -42,31 +43,42 @@ import (
 //
 // * WORKER_COUNT - The number of workers in the worker pool. Defaults to the
 // number of virtual CPUs in the system.
-//
 func main() {
-	doneCh := listenForSigInterrupt()
-
 	cfg, err := getConfig()
 	if err != nil {
 		log.Println("Unable to get config", err)
 		os.Exit(1)
 	}
 
+	// The original service only handled Ctrl+C, so a SIGTERM (an instance
+	// or container being stopped) killed it with jobs in hand. Hardened
+	// mode treats SIGTERM the same way: stop receiving, finish, exit.
+	signals := []os.Signal{os.Interrupt}
+	if cfg.Hardened {
+		signals = append(signals, syscall.SIGTERM)
+	}
+	doneCh := listenForSignals(signals...)
+
 	sqsSvc := sqs.New(cfg.Session)
 	queue := NewJobMessageQueue(cfg.WorkerQueueURL, cfg.MessageVisibilityTimeout, 5, sqsSvc)
+	if cfg.Hardened {
+		queue.Bound(cfg.NumWorkers)
+	}
 	go queue.Listen(doneCh)
 
 	// Job Workers
 	resultsCh := make(chan *wordfreq.JobResult, 10)
-	workers := NewWorkerPool(cfg.NumWorkers, resultsCh, queue, s3.New(cfg.Session))
+	workers := NewWorkerPool(cfg.NumWorkers, resultsCh, queue, s3.New(cfg.Session), cfg.CrashEvery)
 
 	// Notifier to send a message to an Amazon SQS Queue
 	notify := NewResultNotifier(sqsSvc, cfg.ResultQueueURL)
 	// Recorder to write results to Amazon DynamoDB
 	recorder := NewResultRecorder(cfg.ResultTableName, dynamodb.New(cfg.Session))
+	recorder.idempotent = cfg.Hardened
 
 	// Job Progress Collector
 	collector := NewResultCollector(notify, recorder, queue)
+	collector.crashEvery = cfg.CrashEvery
 	go collector.ProcessJobResult(resultsCh)
 
 	// Wait for the workers to complete before continuing on to exit
@@ -75,13 +87,14 @@ func main() {
 
 	// Wait for all results to be completed before continuing
 	collector.WaitForResults()
+	fmt.Println("Worker service exited cleanly")
 }
 
-// Handle Ctr+C / Sig Interrupt
-func listenForSigInterrupt() <-chan struct{} {
+// Handle Ctr+C / Sig Interrupt (and SIGTERM in hardened mode)
+func listenForSignals(sigs ...os.Signal) <-chan struct{} {
 	doneCh := make(chan struct{})
 	sigCh := make(chan os.Signal, 1)
-	signal.Notify(sigCh, os.Interrupt)
+	signal.Notify(sigCh, sigs...)
 	go func() {
 		closed := false
 		for sig := range sigCh {

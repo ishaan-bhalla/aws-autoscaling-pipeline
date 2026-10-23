@@ -10,3 +10,11 @@ Changes in this repository: Go modules and a Docker build; app/session.go so
 the same binary can target a local AWS emulator via AWS_ENDPOINT_URL; the
 local/ stack (Moto, scaling policy re-creation, load test, plotting); the
 documentation and redacted screenshots of the AWS deployment.
+
+Later changes to the worker (October 2026), all off by default so the binary
+behaves as it did on AWS: an opt-in hardened mode (WORKER_HARDENED=1) that
+receives a message only when a worker is free, finishes the job in hand on
+SIGTERM, writes results with a conditional put on file name and ETag, and
+leaves unparseable messages for a dead-letter queue; the SQS SentTimestamp
+and receive count recorded with each result, for measurement; and opt-in
+crash injection (WORKER_CRASH_EVERY) for failure testing.

@@ -3,13 +3,15 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"hash/fnv"
 	"io"
 	"log"
+	"math/rand"
+	"os"
 	"sort"
 	"strings"
 	"sync"
 	"time"
-	"math/rand"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/s3"
@@ -28,7 +30,7 @@ type WorkerPool struct {
 // workers in the pool. The workers are spun off in their own goroutines and the
 // WorkerPool's wait group is used to know when the workers all completed their
 // work and existed.
-func NewWorkerPool(size int, resultCh chan<- *wordfreq.JobResult, queue *JobMessageQueue, s3svc s3iface.S3API) *WorkerPool {
+func NewWorkerPool(size int, resultCh chan<- *wordfreq.JobResult, queue *JobMessageQueue, s3svc s3iface.S3API, crashEvery uint32) *WorkerPool {
 	pool := &WorkerPool{
 		workers: make([]*Worker, size),
 	}
@@ -36,6 +38,7 @@ func NewWorkerPool(size int, resultCh chan<- *wordfreq.JobResult, queue *JobMess
 	for i := 0; i < len(pool.workers); i++ {
 		pool.wg.Add(1)
 		pool.workers[i] = NewWorker(i, resultCh, queue, s3svc)
+		pool.workers[i].crashEvery = crashEvery
 
 		go func(worker *Worker) {
 			worker.run()
@@ -58,6 +61,31 @@ type Worker struct {
 	resultCh chan<- *wordfreq.JobResult
 	queue    *JobMessageQueue
 	s3Svc    s3iface.S3API
+
+	crashEvery uint32
+}
+
+// Injected crash points (failure testing only, see Config.CrashEvery).
+const (
+	crashBeforeWrite = 0
+	crashAfterWrite  = 1
+)
+
+// injectedCrash reports whether this delivery of the job should crash the
+// worker at the given point. Only first deliveries crash, so every crashed
+// job succeeds when it is retried.
+func injectedCrash(job *wordfreq.Job, every uint32, point uint32) bool {
+	if every == 0 || job.OrigMessage.ReceiveCount != 1 {
+		return false
+	}
+	h := fnv.New32a()
+	h.Write([]byte(job.Key))
+	return h.Sum32()%every == point
+}
+
+func crash(job *wordfreq.Job, where string) {
+	fmt.Printf("CRASH INJECTED %s %s %s\n", where, job.OrigMessage.ID, job.Key)
+	os.Exit(2)
 }
 
 // NewWorker creates an initializes a new worker.
@@ -98,7 +126,13 @@ func (w *Worker) run() {
 		min := 10
 		max := 20
 		rand.Seed(time.Now().UnixNano())
-		latency := rand.Intn(max - min) + min
+		latency := rand.Intn(max-min) + min
+		if err == nil && injectedCrash(job, w.crashEvery, crashBeforeWrite) {
+			// Die halfway through the simulated processing time, after the
+			// file has been counted but before anything is written.
+			time.Sleep(time.Duration(latency) * time.Second / 2)
+			crash(job, "before-write")
+		}
 		time.Sleep(time.Duration(latency) * time.Second)
 
 		// The duration is collected so that the results can report the
@@ -119,6 +153,7 @@ func (w *Worker) processJob(job *wordfreq.Job) (wordfreq.Words, error) {
 		return nil, err
 	}
 	defer result.Body.Close()
+	job.ETag = aws.StringValue(result.ETag)
 
 	return w.countTopWords(result.Body, 10, job)
 }

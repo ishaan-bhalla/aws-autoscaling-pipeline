@@ -1,0 +1,84 @@
+{
+  "name": "B-target-tracking-hardened-worker",
+  "notes": "policy=target in_evals=15 hardened=1 visibility=60 dlq=3 crash_every=0 poison=0 malformed=0",
+  "policy": "target",
+  "samples_csv": "B-target-tracking-hardened-worker.csv",
+  "documents_recorded": 120,
+  "documents_expected": 120,
+  "missing": [],
+  "unexpected": [],
+  "duplicate_items": [],
+  "word_count_mismatches": [],
+  "processing_time_s": 443.6,
+  "back_to_min_size_s": 1201,
+  "peak_instances": 5,
+  "scaling_actions": [
+    "121 s: scale out to 5",
+    "1201 s: scale in to 1"
+  ],
+  "instance_seconds_total": 5521,
+  "instance_hours_total": 1.5336,
+  "instance_seconds_until_last_write": 1727,
+  "latency_s": {
+    "p50": 279.4,
+    "p95": 427.8,
+    "max": 442.8,
+    "min": 16.4
+  },
+  "throughput_docs_per_min": 16.23,
+  "removals": [
+    {
+      "seconds": 1201,
+      "container": "wordfreq-worker-5",
+      "queue_in_flight_at_decision": 0,
+      "held_when_stopped": 0,
+      "abandoned": 0,
+      "stop_took_s": 1.2,
+      "exited_cleanly": true
+    },
+    {
+      "seconds": 1201,
+      "container": "wordfreq-worker-2",
+      "queue_in_flight_at_decision": 0,
+      "held_when_stopped": 0,
+      "abandoned": 0,
+      "stop_took_s": 1.5,
+      "exited_cleanly": true
+    },
+    {
+      "seconds": 1201,
+      "container": "wordfreq-worker-4",
+      "queue_in_flight_at_decision": 0,
+      "held_when_stopped": 0,
+      "abandoned": 0,
+      "stop_took_s": 2.3,
+      "exited_cleanly": true
+    },
+    {
+      "seconds": 1201,
+      "container": "wordfreq-worker-3",
+      "queue_in_flight_at_decision": 0,
+      "held_when_stopped": 0,
+      "abandoned": 0,
+      "stop_took_s": 2.4,
+      "exited_cleanly": true
+    }
+  ],
+  "jobs_abandoned_by_removed_workers": 0,
+  "queue_in_flight_at_scale_in_decisions": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "documents_recorded_on_a_redelivery": 0,
+  "injected_crashes": 0,
+  "injected_crashes_before_write": 0,
+  "injected_crashes_after_write": 0,
+  "duplicate_deliveries_caught": 0,
+  "failed_attempts_logged": 0,
+  "unparseable_receives_logged": 0,
+  "dead_letter_queue": [],
+  "crashed_files_later_recorded": 0,
+  "crashed_files": []
+}

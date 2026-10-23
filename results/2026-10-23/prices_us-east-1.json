@@ -1,0 +1,21 @@
+{
+  "retrieved": "2026-10-23",
+  "region": "us-east-1 (US East, N. Virginia), the region of the AWS sandbox used for the original run",
+  "currency": "USD",
+  "note": "Public on-demand list prices, free tier ignored. Read from AWS's own price files on the date above, not quoted from memory.",
+  "prices": {
+    "ec2_t2_micro_linux_per_hour": {"usd": 0.0116, "source": "https://b0.p.awsstatic.com/pricing/2.0/meteredUnitMaps/ec2/USD/current/ec2-ondemand-without-sec-sel/US%20East%20(N.%20Virginia)/Linux/index.json", "published": "2026-10-22T23:14:53Z", "page": "https://aws.amazon.com/ec2/pricing/on-demand/"},
+    "ec2_t3_micro_linux_per_hour": {"usd": 0.0104, "source": "same file as t2.micro", "published": "2026-10-22T23:14:53Z"},
+    "public_ipv4_in_use_per_hour": {"usd": 0.005, "source": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonVPC/current/us-east-1/index.json", "published": "2026-10-16T22:43:21Z", "page": "https://aws.amazon.com/vpc/pricing/"},
+    "ebs_gp3_per_gb_month": {"usd": 0.08, "source": "https://b0.p.awsstatic.com/pricing/2.0/meteredUnitMaps/ec2/USD/current/ebs.json", "published": "2026-10-22T23:14:53Z", "page": "https://aws.amazon.com/ebs/pricing/"},
+    "sqs_standard_per_million_requests": {"usd": 0.40, "source": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AWSQueueService/current/us-east-1/index.json", "published": "2026-09-11T12:46:07Z", "tier": "first 100 billion requests/month", "page": "https://aws.amazon.com/sqs/pricing/"},
+    "dynamodb_on_demand_per_million_write_request_units": {"usd": 0.625, "source": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonDynamoDB/current/us-east-1/index.json", "published": "2026-09-11T12:44:22Z", "page": "https://aws.amazon.com/dynamodb/pricing/on-demand/"},
+    "s3_standard_put_copy_per_1000": {"usd": 0.005, "source": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonS3/current/us-east-1/index.json", "published": "2026-10-15T17:35:40Z", "page": "https://aws.amazon.com/s3/pricing/"},
+    "s3_standard_get_per_1000": {"usd": 0.0004, "source": "same file as S3 PUT", "published": "2026-10-15T17:35:40Z"}
+  },
+  "for_reference_eu_west_2_london": {
+    "ec2_t2_micro_linux_per_hour": 0.0132,
+    "ec2_t3_micro_linux_per_hour": 0.0118,
+    "source": "https://b0.p.awsstatic.com/pricing/2.0/meteredUnitMaps/ec2/USD/current/ec2-ondemand-without-sec-sel/EU%20(London)/Linux/index.json"
+  }
+}

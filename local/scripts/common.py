@@ -7,6 +7,7 @@ UPLOAD_BUCKET = "wordfreq-uploading"
 PROCESS_BUCKET = "wordfreq-processing"
 JOB_QUEUE = "wordfreq-jobs"
 RESULT_QUEUE = "wordfreq-results"
+DLQ = "wordfreq-jobs-dlq"
 TABLE = "wordfreq"
 
 

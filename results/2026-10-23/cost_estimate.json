@@ -1,0 +1,127 @@
+{
+  "label": "ESTIMATE from a local Docker/Moto simulation, not an AWS bill",
+  "region": "us-east-1",
+  "prices_file": "prices_us-east-1.json",
+  "runs": {
+    "A-simple-policy-original-worker": {
+      "t2_micro": {
+        "instance_type": "t2_micro",
+        "instance_hours": 0.5669,
+        "per_1000_docs_usd": {
+          "ec2": 0.0548,
+          "public_ipv4": 0.0236,
+          "ebs_gp3_8gb": 0.0041,
+          "s3_requests": 0.0104,
+          "sqs_requests": 0.003,
+          "dynamodb_writes": 0.0007,
+          "total": 0.0967
+        },
+        "compute_share_pct": 85.4
+      },
+      "t3_micro": {
+        "instance_type": "t3_micro",
+        "instance_hours": 0.5669,
+        "per_1000_docs_usd": {
+          "ec2": 0.0491,
+          "public_ipv4": 0.0236,
+          "ebs_gp3_8gb": 0.0041,
+          "s3_requests": 0.0104,
+          "sqs_requests": 0.003,
+          "dynamodb_writes": 0.0007,
+          "total": 0.091
+        },
+        "compute_share_pct": 84.5
+      }
+    },
+    "B-target-tracking-hardened-worker": {
+      "t2_micro": {
+        "instance_type": "t2_micro",
+        "instance_hours": 1.5336,
+        "per_1000_docs_usd": {
+          "ec2": 0.1482,
+          "public_ipv4": 0.0639,
+          "ebs_gp3_8gb": 0.0112,
+          "s3_requests": 0.0104,
+          "sqs_requests": 0.0053,
+          "dynamodb_writes": 0.0006,
+          "total": 0.2397
+        },
+        "compute_share_pct": 93.2
+      },
+      "t3_micro": {
+        "instance_type": "t3_micro",
+        "instance_hours": 1.5336,
+        "per_1000_docs_usd": {
+          "ec2": 0.1329,
+          "public_ipv4": 0.0639,
+          "ebs_gp3_8gb": 0.0112,
+          "s3_requests": 0.0104,
+          "sqs_requests": 0.0053,
+          "dynamodb_writes": 0.0006,
+          "total": 0.2243
+        },
+        "compute_share_pct": 92.7
+      }
+    },
+    "C-target-tracking-fast-scale-in": {
+      "t2_micro": {
+        "instance_type": "t2_micro",
+        "instance_hours": 0.5378,
+        "per_1000_docs_usd": {
+          "ec2": 0.052,
+          "public_ipv4": 0.0224,
+          "ebs_gp3_8gb": 0.0039,
+          "s3_requests": 0.0104,
+          "sqs_requests": 0.0029,
+          "dynamodb_writes": 0.0006,
+          "total": 0.0922
+        },
+        "compute_share_pct": 84.9
+      },
+      "t3_micro": {
+        "instance_type": "t3_micro",
+        "instance_hours": 0.5378,
+        "per_1000_docs_usd": {
+          "ec2": 0.0466,
+          "public_ipv4": 0.0224,
+          "ebs_gp3_8gb": 0.0039,
+          "s3_requests": 0.0104,
+          "sqs_requests": 0.0029,
+          "dynamodb_writes": 0.0006,
+          "total": 0.0869
+        },
+        "compute_share_pct": 84.0
+      }
+    },
+    "D-failure-injection": {
+      "t2_micro": {
+        "instance_type": "t2_micro",
+        "instance_hours": 0.5969,
+        "per_1000_docs_usd": {
+          "ec2": 0.0577,
+          "public_ipv4": 0.0249,
+          "ebs_gp3_8gb": 0.0044,
+          "s3_requests": 0.0105,
+          "sqs_requests": 0.0031,
+          "dynamodb_writes": 0.0007,
+          "total": 0.1012
+        },
+        "compute_share_pct": 85.9
+      },
+      "t3_micro": {
+        "instance_type": "t3_micro",
+        "instance_hours": 0.5969,
+        "per_1000_docs_usd": {
+          "ec2": 0.0517,
+          "public_ipv4": 0.0249,
+          "ebs_gp3_8gb": 0.0044,
+          "s3_requests": 0.0105,
+          "sqs_requests": 0.0031,
+          "dynamodb_writes": 0.0007,
+          "total": 0.0953
+        },
+        "compute_share_pct": 85.0
+      }
+    }
+  }
+}

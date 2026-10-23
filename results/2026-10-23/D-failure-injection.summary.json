@@ -1,0 +1,121 @@
+{
+  "name": "D-failure-injection",
+  "notes": "policy=target in_evals=3 hardened=1 visibility=60 dlq=3 crash_every=20 poison=3 malformed=1",
+  "policy": "target",
+  "samples_csv": "D-failure-injection.csv",
+  "documents_recorded": 120,
+  "documents_expected": 120,
+  "missing": [],
+  "unexpected": [],
+  "duplicate_items": [],
+  "word_count_mismatches": [],
+  "processing_time_s": 481.0,
+  "back_to_min_size_s": 697,
+  "peak_instances": 5,
+  "scaling_actions": [
+    "121 s: scale out to 5",
+    "484 s: scale in to 1"
+  ],
+  "instance_seconds_total": 2149,
+  "instance_hours_total": 0.5969,
+  "instance_seconds_until_last_write": 1915,
+  "latency_s": {
+    "p50": 291.2,
+    "p95": 455.6,
+    "max": 480.5,
+    "min": 18.2
+  },
+  "throughput_docs_per_min": 14.97,
+  "removals": [
+    {
+      "seconds": 484,
+      "container": "wordfreq-worker-4",
+      "queue_in_flight_at_decision": 4,
+      "held_when_stopped": 0,
+      "abandoned": 0,
+      "stop_took_s": 2.8,
+      "exited_cleanly": true
+    },
+    {
+      "seconds": 484,
+      "container": "wordfreq-worker-2",
+      "queue_in_flight_at_decision": 4,
+      "held_when_stopped": 0,
+      "abandoned": 0,
+      "stop_took_s": 3.9,
+      "exited_cleanly": true
+    },
+    {
+      "seconds": 484,
+      "container": "wordfreq-worker-5",
+      "queue_in_flight_at_decision": 4,
+      "held_when_stopped": 0,
+      "abandoned": 0,
+      "stop_took_s": 3.9,
+      "exited_cleanly": true
+    },
+    {
+      "seconds": 484,
+      "container": "wordfreq-worker-3",
+      "queue_in_flight_at_decision": 4,
+      "held_when_stopped": 0,
+      "abandoned": 0,
+      "stop_took_s": 5.1,
+      "exited_cleanly": true
+    }
+  ],
+  "jobs_abandoned_by_removed_workers": 0,
+  "queue_in_flight_at_scale_in_decisions": [
+    4,
+    4,
+    4,
+    4
+  ],
+  "documents_recorded_on_a_redelivery": 5,
+  "injected_crashes": 11,
+  "injected_crashes_before_write": 5,
+  "injected_crashes_after_write": 6,
+  "duplicate_deliveries_caught": 6,
+  "failed_attempts_logged": 9,
+  "unparseable_receives_logged": 3,
+  "dead_letter_queue": [
+    {
+      "message_id": "e845e4f3-2b60-4db5-b516-9b2872ca0dcc",
+      "s3_key": "zz-corrupt-01.txt",
+      "body_preview": null,
+      "receive_count_on_dlq": 4
+    },
+    {
+      "message_id": "82cef34a-b265-4b8a-aa5e-e9bc0add4c1e",
+      "s3_key": "zz-corrupt-02.txt",
+      "body_preview": null,
+      "receive_count_on_dlq": 4
+    },
+    {
+      "message_id": "8bfd0c1d-ce3b-43b5-a7dd-3931dc3afd49",
+      "s3_key": "zz-corrupt-03.txt",
+      "body_preview": null,
+      "receive_count_on_dlq": 4
+    },
+    {
+      "message_id": "1d383168-d0e2-46f5-a07f-13f5eac213e3",
+      "s3_key": null,
+      "body_preview": "not an S3 event #1: 69bdd2ae60822261",
+      "receive_count_on_dlq": 4
+    }
+  ],
+  "crashed_files_later_recorded": 11,
+  "crashed_files": [
+    "dracula-06.txt",
+    "jane-eyre-08.txt",
+    "moby-dick-05.txt",
+    "dorian-gray-02.txt",
+    "dracula-02.txt",
+    "moby-dick-02.txt",
+    "tom-sawyer-02.txt",
+    "alice-10.txt",
+    "pride-and-prejudice-07.txt",
+    "tom-sawyer-01.txt",
+    "dorian-gray-06.txt"
+  ]
+}

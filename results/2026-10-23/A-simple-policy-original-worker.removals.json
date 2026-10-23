@@ -1,0 +1,55 @@
+{
+  "policy": "simple",
+  "target": 10,
+  "out_evals": 3,
+  "in_evals": 15,
+  "start_epoch_ms": 1792760118779,
+  "end_epoch_ms": 1792760887073,
+  "removals": [
+    {
+      "seconds": 424,
+      "container": "wordfreq-worker-4",
+      "queue_in_flight_at_decision": 35,
+      "held_when_stopped": 9,
+      "abandoned": 9,
+      "abandoned_ids": [
+        "ddbf3f15-eddb-4853-b936-48d871724a20",
+        "5961a7ae-1439-481c-b983-3e96a0e8733a",
+        "b85a6ead-8a90-4b8a-8237-879de822cb87",
+        "7886d185-95ed-4491-9360-32cd7ac14e67",
+        "42e46aa5-6435-4184-bcb9-aaa363e007a8",
+        "0cb2234b-842a-4445-b834-13f42c39086b",
+        "ebb2e168-8a15-4e14-ba59-89054f26deab",
+        "47e5a674-40f1-40ab-bc89-fc6890c41b2d",
+        "5c2566cc-cfe3-4150-a955-cf0196822026"
+      ],
+      "stop_took_s": 0.3,
+      "exited_cleanly": false
+    },
+    {
+      "seconds": 545,
+      "container": "wordfreq-worker-3",
+      "queue_in_flight_at_decision": 7,
+      "held_when_stopped": 4,
+      "abandoned": 4,
+      "abandoned_ids": [
+        "b85a6ead-8a90-4b8a-8237-879de822cb87",
+        "42e46aa5-6435-4184-bcb9-aaa363e007a8",
+        "0cb2234b-842a-4445-b834-13f42c39086b",
+        "ebb2e168-8a15-4e14-ba59-89054f26deab"
+      ],
+      "stop_took_s": 0.2,
+      "exited_cleanly": false
+    },
+    {
+      "seconds": 667,
+      "container": "wordfreq-worker-2",
+      "queue_in_flight_at_decision": 4,
+      "held_when_stopped": 0,
+      "abandoned": 0,
+      "abandoned_ids": [],
+      "stop_took_s": 0.2,
+      "exited_cleanly": false
+    }
+  ]
+}

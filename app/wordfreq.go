@@ -7,12 +7,19 @@ type Job struct {
 	VisibilityTimeout   int64      `json:"-"`
 	OrigMessage         JobMessage `json:"-"`
 	Region, Bucket, Key string
+	// ETag of the S3 object that was counted; used for idempotent writes.
+	ETag string `json:"-"`
 }
 
 type JobMessage struct {
 	ID            string
 	ReceiptHandle string
 	Body          string
+	// SQS system attributes, recorded so per-document latency and retries
+	// can be measured: when the message was sent to the queue, and how many
+	// times it has been received (1 on the first delivery).
+	SentTimestampMs int64
+	ReceiveCount    int
 }
 
 type JobResult struct {
